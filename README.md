@@ -92,6 +92,17 @@ no real database connection is needed to run them.
 See [ARCHITECTURE.md](./ARCHITECTURE.md) for what was prioritised and cut,
 and [SUBMISSION.md](./SUBMISSION.md) for a checklist of what's included.
 
+## Troubleshooting
+
+**`Error: querySrv ECONNREFUSED _mongodb._tcp.<cluster>.mongodb.net` on
+startup.** Some networks, routers, VPNs, or ISPs block the DNS `SRV` record
+lookup that `mongodb+srv://` connection strings rely on for auto-discovering
+cluster nodes — this is unrelated to your Atlas credentials or cluster
+health. Fix: in the Atlas dashboard, go to **Database → Connect → Drivers**
+and switch from the "mongodb+srv" connection string to the standard
+"mongodb://" one (it lists each shard host explicitly instead of relying on
+SRV lookup), and use that as `MONGO_URI` instead.
+
 ## Deployment
 
 - **Backend → Render:** set `MONGO_URI`, `JWT_SECRET`, and `CLIENT_ORIGIN`
