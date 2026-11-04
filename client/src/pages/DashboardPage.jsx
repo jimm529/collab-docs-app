@@ -2,17 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
+import AppHeader from '../components/AppHeader';
 
 const ROLE_BADGE = {
-  owner: 'bg-indigo-100 text-indigo-700',
-  editor: 'bg-green-100 text-green-700',
+  owner: 'bg-[#0b2654]/10 text-[#0b2654]',
+  editor: 'bg-emerald-100 text-emerald-700',
   viewer: 'bg-gray-100 text-gray-600',
 };
 
 const ROLE_LABEL = { owner: 'Owner', editor: 'Can edit', viewer: 'View only' };
 
 export default function DashboardPage() {
-  const { auth, logout } = useAuth();
+  const { auth } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -66,30 +67,25 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b px-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Collab Docs</h1>
-        <div className="flex items-center gap-4 text-sm text-gray-600">
-          <span>{auth.user.email}</span>
-          <button onClick={logout} className="text-indigo-600 hover:underline">
-            Log out
-          </button>
-        </div>
-      </header>
+      <AppHeader />
 
       <main className="max-w-4xl mx-auto px-6 py-8 space-y-8">
         {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded p-3">{error}</p>}
 
-        <section className="bg-white p-4 rounded-lg shadow-sm border space-y-3">
-          <h2 className="font-medium text-gray-800">New document</h2>
+        <section className="bg-white p-5 rounded-lg shadow-sm border space-y-3">
+          <h2 className="text-xs tracking-[0.15em] font-medium text-[#0b2654]">NEW DOCUMENT</h2>
           <form onSubmit={handleCreate} className="flex gap-2">
             <input
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               placeholder="Document title"
-              className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0b2654]/40"
             />
-            <button type="submit" className="rounded bg-indigo-600 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700">
-              Create
+            <button
+              type="submit"
+              className="rounded bg-[#0b2654] text-white px-5 py-2 text-xs tracking-[0.15em] font-medium hover:bg-[#0f3270] transition-colors"
+            >
+              CREATE
             </button>
           </form>
 
@@ -115,7 +111,7 @@ export default function DashboardPage() {
 function DocList({ title, docs, onOpen }) {
   return (
     <section>
-      <h2 className="font-medium text-gray-800 mb-2">{title}</h2>
+      <h2 className="text-xs tracking-[0.15em] font-medium text-[#0b2654] mb-2">{title.toUpperCase()}</h2>
       {docs.length === 0 ? (
         <p className="text-sm text-gray-400">Nothing here yet.</p>
       ) : (

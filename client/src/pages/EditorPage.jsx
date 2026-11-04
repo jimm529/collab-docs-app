@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
+import AppHeader from '../components/AppHeader';
 
 const AUTOSAVE_DELAY_MS = 1000;
 
@@ -98,10 +99,10 @@ export default function EditorPage() {
 
   if (error && !doc) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#0b2654]">
         <div className="text-center space-y-3">
-          <p className="text-red-600">{error}</p>
-          <button onClick={() => navigate('/')} className="text-indigo-600 hover:underline">
+          <p className="text-red-200">{error}</p>
+          <button onClick={() => navigate('/')} className="text-white/80 hover:text-white hover:underline">
             Back to dashboard
           </button>
         </div>
@@ -110,23 +111,27 @@ export default function EditorPage() {
   }
 
   if (!doc) {
-    return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center bg-[#0b2654] text-white/70">Loading...</div>;
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b px-6 py-3 flex items-center justify-between gap-4">
-        <button onClick={() => navigate('/')} className="text-sm text-indigo-600 hover:underline">
-          &larr; Dashboard
-        </button>
-        <input
-          value={title}
-          onChange={handleTitleChange}
-          disabled={!canEdit}
-          className="flex-1 text-lg font-medium border-none focus:outline-none focus:ring-2 focus:ring-indigo-200 rounded px-2 disabled:bg-transparent"
-        />
-        <SaveStatus status={status} />
-      </header>
+      <AppHeader
+        left={
+          <div className="flex items-center gap-4 min-w-0">
+            <button onClick={() => navigate('/')} className="text-sm text-white/70 hover:text-white whitespace-nowrap">
+              &larr; Dashboard
+            </button>
+            <input
+              value={title}
+              onChange={handleTitleChange}
+              disabled={!canEdit}
+              className="text-sm text-white font-medium bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-white/30 rounded px-2 py-1 min-w-0 w-64 disabled:opacity-80"
+            />
+            <SaveStatus status={status} />
+          </div>
+        }
+      />
 
       {error && <p className="max-w-3xl mx-auto mt-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded p-3">{error}</p>}
 
@@ -145,7 +150,7 @@ export default function EditorPage() {
 
         {doc.role === 'owner' && (
           <section className="bg-white rounded-lg shadow-sm border p-4 space-y-3">
-            <h2 className="font-medium text-gray-800">Share this document</h2>
+            <h2 className="text-xs tracking-[0.15em] font-medium text-[#0b2654]">SHARE THIS DOCUMENT</h2>
             <form onSubmit={handleShare} className="flex gap-2">
               <input
                 type="email"
@@ -153,7 +158,7 @@ export default function EditorPage() {
                 onChange={(e) => setShareEmail(e.target.value)}
                 placeholder="user@example.com"
                 required
-                className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0b2654]/40"
               />
               <select
                 value={shareRole}
@@ -163,11 +168,14 @@ export default function EditorPage() {
                 <option value="editor">Can edit</option>
                 <option value="viewer">View only</option>
               </select>
-              <button type="submit" className="rounded bg-indigo-600 text-white px-4 py-2 text-sm font-medium hover:bg-indigo-700">
-                Share
+              <button
+                type="submit"
+                className="rounded bg-[#0b2654] text-white px-5 py-2 text-xs tracking-[0.15em] font-medium hover:bg-[#0f3270] transition-colors"
+              >
+                SHARE
               </button>
             </form>
-            {shareMessage && <p className="text-sm text-green-600">{shareMessage}</p>}
+            {shareMessage && <p className="text-sm text-emerald-600">{shareMessage}</p>}
           </section>
         )}
       </main>
@@ -178,8 +186,8 @@ export default function EditorPage() {
 function SaveStatus({ status }) {
   const label = { saving: 'Saving...', saved: 'Saved', error: 'Save failed', loaded: '' }[status];
   if (!label) return null;
-  const color = status === 'error' ? 'text-red-600' : 'text-gray-400';
-  return <span className={`text-sm ${color}`}>{label}</span>;
+  const color = status === 'error' ? 'text-red-300' : 'text-white/50';
+  return <span className={`text-xs whitespace-nowrap ${color}`}>{label}</span>;
 }
 
 function Toolbar({ editor }) {
@@ -205,7 +213,7 @@ function Toolbar({ editor }) {
             type="button"
             onClick={btn.action}
             className={`px-3 py-1 text-sm rounded ${btn.className || ''} ${
-              isActive ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-100'
+              isActive ? 'bg-[#0b2654]/10 text-[#0b2654]' : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
             {btn.label}
