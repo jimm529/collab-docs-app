@@ -25,6 +25,7 @@ async function request(path, { method = 'GET', body, token, isFormData } = {}) {
 
 export const api = {
   login: (email, password) => request('/auth/login', { method: 'POST', body: { email, password } }),
+  signup: (name, email, password) => request('/auth/signup', { method: 'POST', body: { name, email, password } }),
   listDocuments: (token) => request('/documents', { token }),
   createDocument: (token, title) => request('/documents', { method: 'POST', body: { title }, token }),
   getDocument: (token, id) => request(`/documents/${id}`, { token }),
